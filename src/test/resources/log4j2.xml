@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" name="default" packages="li.excessive.log4j2">
+	<Appenders>
+		<Console name="console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{yyyy-MM-dd'T'HH:mm:ss.SSS} %t %-5p %m%n" />
+		</Console>
+		<RollingFile name="log" fileName="logs/dsc.log" filePattern="logs/dsc-%d{yyyy-MM-dd'T'HH:mm:ss.SSS}.log.gz">
+			<PatternLayout pattern="[%d{yyyy-MM-dd'T'HH:mm:ss.SSS}|%-5p|%C]  %m%n" />
+			<Policies>
+                <OnStartupTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="30 MB"/>
+            </Policies>
+		</RollingFile>
+		<RollingFile name="log.cp-failures" fileName="logs/dsc.cp-failures.log" filePattern="logs/dsc.cp-failures-%d{yyyy-MM-dd'T'HH:mm:ss.SSS}.log.gz">
+			<PatternLayout pattern="%m%n" />
+			<Policies>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+		</RollingFile>
+	</Appenders>
+	
+	<Loggers>
+		<!-- logger to trace files that failed to copy (copy.groovy) -->
+		<Logger name="li.excessive.dsc.cp.failures" level="debug" additivity="false">
+			<AppenderRef ref="log.cp-failures" />
+		</Logger>
+		<Logger name="li.excessive" level="debug" additivity="false">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="log" />
+		</Logger>
+		<Root level="error">
+			<AppenderRef ref="console" />
+			<AppenderRef ref="log" />
+		</Root>
+	</Loggers>
+</Configuration>
